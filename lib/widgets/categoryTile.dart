@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:online_news_app/screens/category.dart';
 
-
-
 class CategoryTile extends StatelessWidget {
   final String imgUrl, label;
   CategoryTile(this.imgUrl, this.label);

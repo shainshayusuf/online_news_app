@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:online_news_app/models/article.dart';
 import 'package:http/http.dart' as http;
 
-
 class News {
   List<Article> articles = List<Article>();
 

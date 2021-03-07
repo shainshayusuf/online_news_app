@@ -33,19 +33,20 @@ class _CategoryScreenState extends State<CategoryScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text("${widget.category} News"),
-         backgroundColor: Colors.blueAccent,
+        backgroundColor: Colors.blueAccent,
       ),
       body: Container(
-        padding: EdgeInsets.only(top:20.0),
-        child: articles.length == 0?Center(child: CircularProgressIndicator()): ListView.builder(
-            itemCount: articles.length,
-            shrinkWrap: true,
-            physics: ClampingScrollPhysics(),
-            itemBuilder: (context, index) {
-              final article = articles[index];
-              return NewsTile(
-                  article: article);
-            }),
+        padding: EdgeInsets.only(top: 20.0),
+        child: articles.length == 0
+            ? Center(child: CircularProgressIndicator())
+            : ListView.builder(
+                itemCount: articles.length,
+                shrinkWrap: true,
+                physics: ClampingScrollPhysics(),
+                itemBuilder: (context, index) {
+                  final article = articles[index];
+                  return NewsTile(article: article);
+                }),
       ),
     );
   }
