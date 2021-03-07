@@ -3,6 +3,7 @@ import 'package:online_news_app/models/article.dart';
 import 'package:online_news_app/screens/article_view.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'dart:math';
 
 class NewsTile extends StatefulWidget {
@@ -18,10 +19,6 @@ class _NewsTileState extends State<NewsTile> {
   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
       Random random = new Random();
-  // getLocaltime(String date){
-  //   var dateTime = DateFormat("yyyy-MM-dd HH:mm:ss").parse(date, true);
-  //     print(dateTime);
-  // }
   
    @override
   Widget build(BuildContext context) {
@@ -39,8 +36,8 @@ class _NewsTileState extends State<NewsTile> {
                 children: <Widget>[
                   ClipRRect(
                     borderRadius: BorderRadius.circular(10),
-                    child: Image.network(
-                      widget.article.urlToImage,
+                    child: CachedNetworkImage(
+                     imageUrl: widget.article.urlToImage,
                       height: 180,
                       width: MediaQuery.of(context).size.width,
                       fit: BoxFit.cover,
