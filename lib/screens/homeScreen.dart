@@ -6,6 +6,8 @@ import 'package:online_news_app/models/article.dart';
 import 'package:online_news_app/models/category.dart';
 import 'package:online_news_app/widgets/categoryTile.dart';
 import 'package:online_news_app/widgets/newsTile.dart';
+import 'package:intl/intl.dart';
+
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -15,13 +17,18 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
    List<Category> categories = List<Category>();
   List<Article> articles = List<Article>();
+  String fetchTime;
+  bool _enabled = true;
+   final _scaffoldKey = GlobalKey<ScaffoldState>(); 
 
   News news = News();
 
   getAndSetNews() async {
     await news.getNewsHeadlines("in");
     articles = news.articles;
-    setState(() {});
+    setState(() {
+      fetchTime = DateFormat('h:mm a').format(DateTime.now());
+    });
   }
 
   @override
@@ -34,9 +41,23 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
         title: Text("Online News App"),
         backgroundColor: Colors.blueAccent,
+        actions: <Widget>[
+            Switch(value: _enabled, onChanged: (enabled){
+              setState(() {
+                _enabled=enabled;
+              });
+              String val = enabled==true?'enabled':'disbaled';
+              final snackBar = SnackBar(
+            content: Text('Background fetch $val'  ),
+            duration: Duration(seconds: 2),
+          );
+          _scaffoldKey.currentState.showSnackBar(snackBar);
+            },activeColor: Colors.white,),
+          ]
       ),
       body: SingleChildScrollView(
         child: Container(
@@ -55,21 +76,34 @@ class _HomeScreenState extends State<HomeScreen> {
                   },
                 ),
               ),
-              Align(
+             fetchTime != null ? Align(
                 alignment: Alignment.topRight,
                               child: Container(
                                 padding: EdgeInsets.only(right: 10.0),
-                       child: IconButton(icon: Icon(Icons.refresh),
-                       onPressed: () {
-                         setState(() {
-                           articles = [];
-                         });
-                         getAndSetNews();
-                       },
-                       color: Colors.blueAccent,
+                       child: Column(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                         children: [
+                            Padding(
+                        padding: const EdgeInsets.only(right: 8.0),
+                        child: Text(
+                          'Last fetched:' +fetchTime ,
+                          style: TextStyle(fontSize: 10.0),
+                        ),
+                      ),
+                           IconButton(icon: Icon(Icons.refresh),
+                           onPressed: () {
+                             setState(() {
+                               articles = [];
+                             });
+                             getAndSetNews();
+                           },
+                           color: Colors.blueAccent,
+                           ),
+                         ],
                        ),
                   ),
-              ),
+              ):Container(),
               articles.length == 0?Center(child: CircularProgressIndicator()): ListView.builder(
                   itemCount: articles.length,
                   shrinkWrap: true,
