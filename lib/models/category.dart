@@ -9,21 +9,21 @@ Category categoryFromJson(String str) => Category.fromJson(json.decode(str));
 String categoryToJson(Category data) => json.encode(data.toJson());
 
 class Category {
-    Category({
-        this.label,
-        this.imgUrl,
-    });
+  Category({
+    this.label,
+    this.imgUrl,
+  });
 
-    String label;
-    String imgUrl;
+  String label;
+  String imgUrl;
 
-    factory Category.fromJson(Map<String, dynamic> json) => Category(
+  factory Category.fromJson(Map<String, dynamic> json) => Category(
         label: json["label"],
         imgUrl: json["imgUrl"],
-    );
+      );
 
-    Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => {
         "label": label,
         "imgUrl": imgUrl,
-    };
+      };
 }

@@ -18,15 +18,16 @@ class _NewsTileState extends State<NewsTile> {
   String _notificationTimeString;
   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
-      Random random = new Random();
- 
-  
-   @override
+  Random random = new Random();
+
+  @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
         Navigator.push(
-            context, MaterialPageRoute(builder: (context) => ArticleView(widget.article.url)));
+            context,
+            MaterialPageRoute(
+                builder: (context) => ArticleView(widget.article.url)));
       },
       child: Container(
           margin: EdgeInsets.only(bottom: 16),
@@ -38,7 +39,7 @@ class _NewsTileState extends State<NewsTile> {
                   ClipRRect(
                     borderRadius: BorderRadius.circular(10),
                     child: CachedNetworkImage(
-                      imageUrl:widget.article.urlToImage,
+                      imageUrl: widget.article.urlToImage,
                       height: 180,
                       width: MediaQuery.of(context).size.width,
                       fit: BoxFit.cover,
@@ -47,81 +48,82 @@ class _NewsTileState extends State<NewsTile> {
                   Align(
                     alignment: Alignment.bottomRight,
                     child: IconButton(
-                      icon: Icon(Icons.notifications),
-                      color: Colors.white,
-                      onPressed: () {
-                  _notificationTimeString =
-                      DateFormat('HH:mm').format(DateTime.now());
-                  showModalBottomSheet(
-                    useRootNavigator: true,
-                    context: context,
-                    clipBehavior: Clip.antiAlias,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.vertical(
-                        top: Radius.circular(24),
-                      ),
-                    ),
-                    builder: (context) {
-                      return StatefulBuilder(
-                        builder: (context, setModalState) {
-                          return Container(
-                            padding: const EdgeInsets.all(32),
-                            child: Column(
-                              children: [
-                                FlatButton(
-                                  onPressed: () async {
-                                    var selectedTime = await showTimePicker(
-                                      context: context,
-                                      initialTime: TimeOfDay.now(),
-                                    );
-                                    if (selectedTime != null) {
-                                      final now = DateTime.now();
-                                      var selectedDateTime = DateTime(
-                                          now.year,
-                                          now.month,
-                                          now.day,
-                                          selectedTime.hour,
-                                          selectedTime.minute);
-                                      _notificationTime = selectedDateTime;
-                                      setModalState(() {
-                                        _notificationTimeString =
-                                            DateFormat('HH:mm')
-                                                .format(selectedDateTime);
-                                      });
-                                    }
-                                  },
-                                  child: Text(
-                                    _notificationTimeString,
-                                    style: TextStyle(fontSize: 32),
-                                  ),
-                                ),
-                                SizedBox(height: 10.0),
-                                Text(
-                                  'Click on above text to change time',
-                                  style: TextStyle(
-                                      fontSize: 15, letterSpacing: 2.0),
-                                ),
-                                SizedBox(height: 20.0),
-                                FloatingActionButton.extended(
-                                  onPressed: scheduleNotification,
-                                  icon: Icon(Icons.alarm),
-                                  label: Text('Set  Reminder'),
-                                ),
-                              ],
+                        icon: Icon(Icons.notifications),
+                        color: Colors.white,
+                        onPressed: () {
+                          _notificationTimeString =
+                              DateFormat('HH:mm').format(DateTime.now());
+                          showModalBottomSheet(
+                            useRootNavigator: true,
+                            context: context,
+                            clipBehavior: Clip.antiAlias,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.vertical(
+                                top: Radius.circular(24),
+                              ),
                             ),
+                            builder: (context) {
+                              return StatefulBuilder(
+                                builder: (context, setModalState) {
+                                  return Container(
+                                    padding: const EdgeInsets.all(32),
+                                    child: Column(
+                                      children: [
+                                        FlatButton(
+                                          onPressed: () async {
+                                            var selectedTime =
+                                                await showTimePicker(
+                                              context: context,
+                                              initialTime: TimeOfDay.now(),
+                                            );
+                                            if (selectedTime != null) {
+                                              final now = DateTime.now();
+                                              var selectedDateTime = DateTime(
+                                                  now.year,
+                                                  now.month,
+                                                  now.day,
+                                                  selectedTime.hour,
+                                                  selectedTime.minute);
+                                              _notificationTime =
+                                                  selectedDateTime;
+                                              setModalState(() {
+                                                _notificationTimeString =
+                                                    DateFormat('HH:mm').format(
+                                                        selectedDateTime);
+                                              });
+                                            }
+                                          },
+                                          child: Text(
+                                            _notificationTimeString,
+                                            style: TextStyle(fontSize: 32),
+                                          ),
+                                        ),
+                                        SizedBox(height: 10.0),
+                                        Text(
+                                          'Click on above text to change time',
+                                          style: TextStyle(
+                                              fontSize: 15, letterSpacing: 2.0),
+                                        ),
+                                        SizedBox(height: 20.0),
+                                        FloatingActionButton.extended(
+                                          onPressed: scheduleNotification,
+                                          icon: Icon(Icons.alarm),
+                                          label: Text('Set  Reminder'),
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                },
+                              );
+                            },
                           );
-                        },
-                      );
-                    },
-                  );
-                }),
-                    ),
-                  
+                        }),
+                  ),
                 ],
               ),
               SizedBox(height: 12),
               Text(
-               widget.article.title,
+                widget.article.title,
                 style: TextStyle(fontSize: 16),
               ),
               SizedBox(height: 6),
@@ -129,11 +131,11 @@ class _NewsTileState extends State<NewsTile> {
               SizedBox(
                 height: 6,
               ),
-              
             ],
           )),
     );
   }
+
   Future<void> scheduleNotification() async {
     var scheduledNotificationDateTime = _notificationTime;
     var androidPlatformChannelSpecifics = AndroidNotificationDetails(
@@ -155,4 +157,3 @@ class _NewsTileState extends State<NewsTile> {
     Navigator.pop(context);
   }
 }
-
